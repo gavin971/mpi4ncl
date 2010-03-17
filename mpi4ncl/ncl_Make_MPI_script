@@ -1,0 +1,41 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+    echo
+    echo "Wrapper for running ncl scripts with mpi4ncl"
+    echo "by Robert Schuster"
+    echo
+    echo "  Usage:"
+    echo
+    echo "  without arguments:"
+    echo "  ncl_Make_MPI_script script.ncl"
+    echo
+    echo "  with arguments:"
+    echo "  ncl_Make_MPI_script script.ncl -n"
+    echo
+    echo "  Output: script.ncl.bash"
+    echo
+    echo "  Run the script:"
+    echo "  mpirun -np 4 script.ncl.bash"
+    echo
+fi
+
+echo "#!/bin/bash"                                                     > $1.bash
+echo ""                                                               >> $1.bash
+echo "NCL_ARGS=\"$*\""                                                >> $1.bash
+echo "WORK_PATH=$PWD"                                                 >> $1.bash
+echo ""                                                               >> $1.bash
+echo "export NCARG_ROOT=$NCARG_ROOT"                                  >> $1.bash
+if [ -z "$NCL_DEF_LIB_DIR" ]
+then
+    echo "export NCL_DEF_LIB_DIR=\$NCARG_ROOT/lib/mpi"  >> $1.bash
+else
+    echo "export NCL_DEF_LIB_DIR=\$NCARG_ROOT/lib/mpi:\$NCL_DEF_LIB_DIR"  >> $1.bash
+fi
+echo "export PATH=\$NCARG_ROOT/bin:\$PATH"                            >> $1.bash
+echo ""                                                               >> $1.bash
+echo "cd \$WORK_PATH"                                                 >> $1.bash
+echo 'ncl $NCL_ARGS args="\"$0 $*\""'                                 >> $1.bash
+
+chmod +x $1.bash
