@@ -49,7 +49,7 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-
+CC=mpicc
 
 # build
 build: .build-post
@@ -57,17 +57,26 @@ build: .build-post
 .build-pre:
 # Add your pre 'build' code here...
 
-.build-post: .build-impl
+.build-post: .build-impl dist/makeHeader.x dist/mpi4ncl.ncl
 # Add your post 'build' code here...
+# build the header-maker
+dist/makeHeader.x: makeHeader.c
+	${RM} $@
+	$(CC) makeHeader.c -o dist/makeHeader.x
 
+dist/mpi4ncl.ncl: dist/makeHeader.x
+	${RM} $@
+	dist/makeHeader.x
 
 # clean
 clean: .clean-post
 
 .clean-pre:
 # Add your pre 'clean' code here...
-	rm -rf ${NCARG_ROOT}/lib/mpi
-	rm ${NCARG_ROOT}/bin/ncl_Make_MPI_script
+	${RM} -rf ${NCARG_ROOT}/lib/mpi
+	${RM} ${NCARG_ROOT}/bin/ncl_Make_MPI_script
+	${RM} dist/makeHeader.x
+	${RM} -rf ${NCARG_ROOT}/lib/ncarg/nclscripts/mpi
 
 .clean-post: .clean-impl
 # Add your post 'clean' code here...
@@ -106,6 +115,8 @@ install: build
 	${MKDIR} ${NCARG_ROOT}/lib/mpi
 	${CP} ${CND_DISTDIR}/libmpi4ncl.so ${NCARG_ROOT}/lib/mpi/libmpi4ncl.so
 	${CP} ncl_Make_MPI_script ${NCARG_ROOT}/bin/ncl_Make_MPI_script
+	${MKDIR} ${NCARG_ROOT}/lib/ncarg/nclscripts/mpi
+	${CP} ${CND_DISTDIR}/mpi4ncl.ncl ${NCARG_ROOT}/lib/ncarg/nclscripts/mpi/mpi4ncl.ncl
 
 # include project implementation makefile
 include nbproject/Makefile-impl.mk
