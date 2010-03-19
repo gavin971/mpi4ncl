@@ -57,16 +57,20 @@ build: .build-post
 .build-pre:
 # Add your pre 'build' code here...
 
-.build-post: .build-impl dist/makeHeader.x dist/mpi4ncl.ncl
+.build-post: .build-impl dist/makeHeader.exe dist/mpi4ncl.ncl
 # Add your post 'build' code here...
 # build the header-maker
-dist/makeHeader.x: makeHeader.c
+dist/makeHeader.exe: build/makeHeader.o
 	${RM} $@
-	$(CC) makeHeader.c -o dist/makeHeader.x
+	$(LINK.c) build/makeHeader.o -o dist/makeHeader.exe
 
-dist/mpi4ncl.ncl: dist/makeHeader.x
+dist/mpi4ncl.ncl: dist/makeHeader.exe
 	${RM} $@
-	dist/makeHeader.x
+	dist/makeHeader.exe
+
+build/makeHeader.o: makeHeader.c
+	${RM} $@
+	$(COMPILE.c) makeHeader.c -o build/makeHeader.o
 
 # clean
 clean: .clean-post
@@ -75,7 +79,8 @@ clean: .clean-post
 # Add your pre 'clean' code here...
 	${RM} -rf ${NCARG_ROOT}/lib/mpi
 	${RM} ${NCARG_ROOT}/bin/ncl_Make_MPI_script
-	${RM} dist/makeHeader.x
+	${RM} dist/makeHeader.exe
+	${RM} build/makeHeader.o
 	${RM} -rf ${NCARG_ROOT}/lib/ncarg/nclscripts/mpi
 
 .clean-post: .clean-impl
