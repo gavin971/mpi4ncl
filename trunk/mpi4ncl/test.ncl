@@ -31,4 +31,5 @@ begin
 
     err = MPI_Finalize()
     print("MPI_Finalize: " + err)
+    exit
 end
