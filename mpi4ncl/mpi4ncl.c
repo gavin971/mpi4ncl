@@ -13,6 +13,19 @@
 #include <mpi.h>
 
 /*
+ * The most MPI-Implementation use integers for the MPI_Comm type, but not 
+ * all. One example is OpenMPI with a special struct
+ **/
+MPI_Comm getMPI_Comm(int* commid) {
+	#ifdef OMPI_MPI_H
+		if (*commid == -10001) return(MPI_COMM_WORLD);
+		if (*commid == -10002) return(MPI_COMM_SELF);		
+	#else
+		return(*commid);
+	#endif
+}
+
+/*
  * This function converts the ncl-datatyp to the mpi-datatyp and returns the size of
  * each element.
  **/
@@ -100,7 +113,7 @@ NhlErrorTypes MPI_Comm_rank_W(void) {
     int* rank = (int*) NclGetArgValue(1, 2, NULL, NULL, NULL, NULL, NULL, 1);
 
     result_dim[0] = 1;
-    result = MPI_Comm_rank(*comm, rank);
+    result = MPI_Comm_rank(getMPI_Comm(comm), rank);
     return(NclReturnValue(&result,1,result_dim,NULL,NCL_int,1));
 }
 
@@ -120,7 +133,7 @@ NhlErrorTypes MPI_Comm_size_W(void) {
     int* size = (int*) NclGetArgValue(1, 2, NULL, NULL, NULL, NULL, NULL, 1);
 
     result_dim[0] = 1;
-    result = MPI_Comm_size(*comm, size);
+    result = MPI_Comm_size(getMPI_Comm(comm), size);
     return(NclReturnValue(&result,1,result_dim,NULL,NCL_int,1));
 }
 
@@ -164,7 +177,7 @@ NhlErrorTypes MPI_Send_W(void) {
     int* comm = (int*) NclGetArgValue(3, 4, NULL, NULL, NULL, NULL, NULL, 1);
 
     result_dim[0] = 1;
-    result = MPI_Send(message, count, type, *dest, *tag, *comm);
+    result = MPI_Send(message, count, type, *dest, *tag, getMPI_Comm(comm));
     return(NclReturnValue(&result,1,result_dim,NULL,NCL_int,1));
 }
 
@@ -211,7 +224,7 @@ NhlErrorTypes MPI_Recv_W(void) {
 
     //receive the data
     byte daten[size*count];
-    result = MPI_Recv(&daten, count, type, *dest, *tag, *comm, &status);
+    result = MPI_Recv(&daten, count, type, *dest, *tag, getMPI_Comm(comm), &status);
     int received;
     MPI_Get_count(&status, type, &received);
     memcpy(message, daten, received*size);

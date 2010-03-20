@@ -18,9 +18,14 @@ int main(int argc, char** argv) {
     FILE* script = fopen("dist/mpi4ncl.ncl", "w");
 
     //write the constants
-    fprintf(script, "MPI_COMM_WORLD = %d \n", MPI_COMM_WORLD);
-    fprintf(script, "MPI_COMM_SELF = %d \n", MPI_COMM_SELF);
-
+	#ifdef OMPI_MPI_H
+	    fprintf(script, "MPI_COMM_WORLD = %d \n", -10001);
+    	fprintf(script, "MPI_COMM_SELF = %d \n", -10002);
+	#else
+	    fprintf(script, "MPI_COMM_WORLD = %d \n", MPI_COMM_WORLD);
+    	fprintf(script, "MPI_COMM_SELF = %d \n", MPI_COMM_SELF);	
+	#endif
+	
     //close the file
     fclose(script);
     
