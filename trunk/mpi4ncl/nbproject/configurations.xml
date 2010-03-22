@@ -32,6 +32,7 @@
       <compileType>
         <cTool>
           <incDir>
+            <pElem>${NCARG_ROOT}/include</pElem>
             <pElem>../../../local/ncarg/include</pElem>
           </incDir>
           <commandLine>-std=c99</commandLine>

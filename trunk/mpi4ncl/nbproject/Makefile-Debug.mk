@@ -60,7 +60,7 @@ dist/libmpi4ncl.so: ${OBJECTFILES}
 ${OBJECTDIR}/mpi4ncl.o: nbproject/Makefile-${CND_CONF}.mk mpi4ncl.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.c) -g -I../../../local/ncarg/include -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/mpi4ncl.o mpi4ncl.c
+	$(COMPILE.c) -g -I${NCARG_ROOT}/include -I../../../local/ncarg/include -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/mpi4ncl.o mpi4ncl.c
 
 # Subprojects
 .build-subprojects:
