@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
+<configurationDescriptor version="69">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -27,7 +27,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MPI|GNU</compilerSet>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compileType>
         <cTool>
@@ -39,8 +39,6 @@
         </cTool>
         <linkerTool>
           <output>${CND_DISTDIR}/libmpi4ncl.so</output>
-          <linkerLibItems>
-          </linkerLibItems>
         </linkerTool>
       </compileType>
     </conf>
@@ -60,10 +58,6 @@
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
-        <linkerTool>
-          <linkerLibItems>
-          </linkerLibItems>
-        </linkerTool>
       </compileType>
     </conf>
   </confs>

@@ -232,6 +232,25 @@ NhlErrorTypes MPI_Recv_W(void) {
     return(NclReturnValue(&result,1,result_dim,NULL,NCL_int,1));
 }
 
+/*
+ * Call MPI_Recv
+ * @MPI_comm    the communicator
+ * @size        the size of this communicator
+ **/
+NhlErrorTypes MPI_Barrier_W(void) {
+    int result;
+    int result_dim[1];
+    result_dim[0] = 1;
+
+    //get the MPI_Comm
+    int* comm = (int*) NclGetArgValue(0, 1, NULL, NULL, NULL, NULL, NULL, 0);
+
+    //call the MPI_Barrier function
+    result = MPI_Barrier(getMPI_Comm(comm));
+
+    return(NclReturnValue(&result,1,result_dim,NULL,NCL_int,1));
+}
+
 
 void Init(void){
     void *args;
@@ -274,6 +293,11 @@ void Init(void){
     SetArgTemplate(args,2,"integer",1,dimsizes);
     SetArgTemplate(args,3,"integer",1,dimsizes);
     NclRegisterFunc(MPI_Recv_W,args,"MPI_Recv",4);
+
+    //Register MPI_Barrier function--------------------------------------
+    args = NewArgs(1);
+    SetArgTemplate(args,0,"integer",1,dimsizes);
+    NclRegisterFunc(MPI_Barrier_W,args,"MPI_Barrier",1);
 
 }
 
