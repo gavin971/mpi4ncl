@@ -49,7 +49,12 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=mpicc
+SYSTEM=$(shell uname)
+ifeq "$(SYSTEM)" "Darwin"
+CC=mpicc -flat_namespace -undefined suppress
+else
+CC=mpicc 
+endif
 
 # build
 build: .build-post
