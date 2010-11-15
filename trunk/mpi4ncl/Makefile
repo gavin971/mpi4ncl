@@ -51,8 +51,8 @@ CCADMIN=CCadmin
 RANLIB=ranlib
 SYSTEM=$(shell uname)
 ifeq "$(SYSTEM)" "Darwin"
-CC=mpicc -flat_namespace -undefined suppress
-LDLIB=mpicc -dynamiclib 
+CC=mpicc  
+LDLIB=mpicc -dynamiclib -flat_namespace -undefined suppress
 else
 CC=mpicc 
 LDLIB=mpicc -shared 
@@ -85,7 +85,7 @@ build/makeHeader.o: makeHeader.c
 
 build/mpi4ncl.o: mpi4ncl.c
 	${RM} $@
-	$(COMPILE.c) -fPIC -std=c99 mpi4ncl.c -o build/mpi4ncl.o
+	$(COMPILE.c) -I${NCARG_ROOT}/include -fPIC -std=c99 mpi4ncl.c -o build/mpi4ncl.o
 
 # clean
 clean: .clean-post
