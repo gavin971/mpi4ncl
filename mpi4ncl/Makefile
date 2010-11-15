@@ -52,8 +52,10 @@ RANLIB=ranlib
 SYSTEM=$(shell uname)
 ifeq "$(SYSTEM)" "Darwin"
 CC=mpicc -flat_namespace -undefined suppress
+LDLIB=mpicc -dynamiclib 
 else
 CC=mpicc 
+LDLIB=mpicc -shared 
 endif
 
 # build
@@ -62,7 +64,7 @@ build: .build-post
 .build-pre:
 # Add your pre 'build' code here...
 
-.build-post: .build-impl dist/makeHeader.exe dist/mpi4ncl.ncl
+.build-post: dist/makeHeader.exe dist/mpi4ncl.ncl dist/libmpi4ncl.so
 # Add your post 'build' code here...
 # build the header-maker
 dist/makeHeader.exe: build/makeHeader.o
@@ -73,9 +75,17 @@ dist/mpi4ncl.ncl: dist/makeHeader.exe
 	${RM} $@
 	dist/makeHeader.exe
 
+dist/libmpi4ncl.so: build/mpi4ncl.o
+	${RM} $@
+	${LDLIB} build/mpi4ncl.o -o dist/libmpi4ncl.so
+
 build/makeHeader.o: makeHeader.c
 	${RM} $@
 	$(COMPILE.c) makeHeader.c -o build/makeHeader.o
+
+build/mpi4ncl.o: mpi4ncl.c
+	${RM} $@
+	$(COMPILE.c) -fPIC -std=c99 mpi4ncl.c -o build/mpi4ncl.o
 
 # clean
 clean: .clean-post
@@ -86,6 +96,7 @@ clean: .clean-post
 	${RM} ${NCARG_ROOT}/bin/ncl_Make_MPI_script
 	${RM} dist/makeHeader.exe
 	${RM} build/makeHeader.o
+	${RM} build/mpi4ncl.o
 	${RM} -rf ${NCARG_ROOT}/lib/ncarg/nclscripts/mpi
 
 .clean-post: .clean-impl
