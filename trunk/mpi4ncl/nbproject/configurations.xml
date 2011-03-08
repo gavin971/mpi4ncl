@@ -34,6 +34,7 @@
           <incDir>
             <pElem>${NCARG_ROOT}/include</pElem>
             <pElem>../../../local/ncarg/include</pElem>
+            <pElem>/usr/local/ncl_ncarg-6.0.0b/include</pElem>
           </incDir>
           <commandLine>-std=c99</commandLine>
         </cTool>
