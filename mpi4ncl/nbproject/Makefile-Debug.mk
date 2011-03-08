@@ -62,7 +62,7 @@ dist/libmpi4ncl.so: ${OBJECTFILES}
 
 ${OBJECTDIR}/mpi4ncl.o: mpi4ncl.c 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.c) -g -I${NCARG_ROOT}/include -I../../../local/ncarg/include -fPIC  -o ${OBJECTDIR}/mpi4ncl.o mpi4ncl.c
+	$(COMPILE.c) -g -I${NCARG_ROOT}/include -I../../../local/ncarg/include -I/usr/local/ncl_ncarg-6.0.0b/include -fPIC  -o ${OBJECTDIR}/mpi4ncl.o mpi4ncl.c
 
 # Subprojects
 .build-subprojects:

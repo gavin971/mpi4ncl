@@ -63,7 +63,7 @@ void NCL_type_to_MPI_type(NclBasicDataTypes* ncltype, MPI_Datatype* mpitype, int
  **/
 NhlErrorTypes MPI_Init_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
     int argc = 0;
     char* argv[100];
     string* nclargs;
@@ -91,7 +91,7 @@ NhlErrorTypes MPI_Init_W(void) {
  **/
 NhlErrorTypes MPI_Finalize_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
     result_dim[0] = 1;
     result = MPI_Finalize();
     return(NclReturnValue(&result,1,result_dim,NULL,NCL_int,1));
@@ -104,7 +104,7 @@ NhlErrorTypes MPI_Finalize_W(void) {
  **/
 NhlErrorTypes MPI_Comm_rank_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
 
     //get the MPI_Comm
     int* comm = (int*) NclGetArgValue(0, 2, NULL, NULL, NULL, NULL, NULL, 2);
@@ -124,7 +124,7 @@ NhlErrorTypes MPI_Comm_rank_W(void) {
  **/
 NhlErrorTypes MPI_Comm_size_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
 
     //get the MPI_Comm
     int* comm = (int*) NclGetArgValue(0, 2, NULL, NULL, NULL, NULL, NULL, 2);
@@ -144,10 +144,10 @@ NhlErrorTypes MPI_Comm_size_W(void) {
  **/
 NhlErrorTypes MPI_Send_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
 
     //get the Message
-    int message_dimssizes[NCL_MAX_DIMENSIONS];
+    ng_size_t message_dimssizes[NCL_MAX_DIMENSIONS];
     int message_ndims;
     NclBasicDataTypes message_type;
     void* message = NclGetArgValue(0, 4, &message_ndims, message_dimssizes, NULL, NULL, &message_type, 2);
@@ -188,12 +188,12 @@ NhlErrorTypes MPI_Send_W(void) {
  **/
 NhlErrorTypes MPI_Recv_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
     result_dim[0] = 1;
     MPI_Status status;
 
     //get the Message
-    int message_dimssizes[NCL_MAX_DIMENSIONS];
+    ng_size_t message_dimssizes[NCL_MAX_DIMENSIONS];
     int message_ndims;
     NclBasicDataTypes message_type;
     void* message = NclGetArgValue(0, 4, &message_ndims, message_dimssizes, NULL, NULL, &message_type, 1);
@@ -239,7 +239,7 @@ NhlErrorTypes MPI_Recv_W(void) {
  **/
 NhlErrorTypes MPI_Barrier_W(void) {
     int result;
-    int result_dim[1];
+    ng_size_t result_dim[1];
     result_dim[0] = 1;
 
     //get the MPI_Comm
@@ -254,7 +254,7 @@ NhlErrorTypes MPI_Barrier_W(void) {
 
 void Init(void){
     void *args;
-    int dimsizes[NCL_MAX_DIMENSIONS];
+    ng_size_t dimsizes[NCL_MAX_DIMENSIONS];
 
     //Register MPI_Init function.-----------------------------------
     args = NewArgs(1);
